@@ -1,0 +1,56 @@
+
+class parent_trans;
+  bit [31:0] data;
+  int id;
+  
+  function void display();
+    $display("Base: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass
+
+class child_trans extends parent_trans;
+ // bit [31:0] data;
+ // int id;
+  
+  function void display();
+    super.display();
+    $display("Child: Value of data = %0d, id = %0d", data, id);
+  endfunction
+endclass
+
+module class_example;
+  initial begin
+    parent_trans p_tr;
+    child_trans c_tr;
+    p_tr=new();
+    c_tr = new();
+   p_tr.data = 15;
+     p_tr.id   = 12;
+    c_tr.data = 5;//we are assign child class values
+    c_tr.id   = 2;
+    $display( ".................after assinging values to parect ,child"); 
+     p_tr.display();
+    c_tr.display();//default values of base ...0,0
+    
+   p_tr = c_tr;//assign to parent
+    $display( "..................equal the values of parent = child");
+    p_tr.display();//
+    c_tr.display();
+    
+    p_tr.data = 10;//here override by parent
+    p_tr.id   = 11;
+    $display( ".............after assinging values to parect"); 
+    p_tr.display();
+   c_tr.display();
+    
+    c_tr.data = 25;
+    c_tr.id   = 26; p_tr = c_tr;
+    $display( "................change the  values to child"); 
+    
+    p_tr.display();//
+    c_tr.display();//
+        
+  
+#100 $finish;
+  end
+endmodule
